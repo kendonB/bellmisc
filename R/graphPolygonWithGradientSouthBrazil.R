@@ -31,6 +31,8 @@ graphPolygonWithGradientSouthBrazil <- function(colourVar, dataPoly,
   if (!(class(backPolygon) == "data.frame")) {
     backPolygon <- convertShpPolyToDf(backPolygon)
   }
+  #test
+  2+2
   if (!(class(dataPoly) == "data.frame")) {
     dataPoly <- convertShpPolyToDf(dataPoly)
   }
