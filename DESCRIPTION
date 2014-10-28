@@ -1,0 +1,18 @@
+Package: BellMisc
+Type: Package
+Title: What the package does (short line)
+Version: 1.0
+Date: 2014-08-29
+Author: Kendon Bell
+Maintainer: Kendon Bell <kmb56@berkeley.edu>
+Description: More about what it does (maybe more than one line)
+Depends:
+    ggplot2,
+    grid,
+    plyr,
+    RColorBrewer,
+    foreach,
+    data.table,
+    WDI,
+    grid
+License: GPL-3.0
