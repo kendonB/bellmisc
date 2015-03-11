@@ -8,16 +8,9 @@
 #' @return a data.frame containing the world bank output and a
 #' gdpDeflator index.
 gdpDeflator <- function(country, start, end){
-  indicator <- WDIsearch()[which(WDIsearch()[,"name"] == "Inflation, GDP deflator (annual %)"), "indicator"]
+  indicator <- WDIsearch()[which(WDIsearch()[,"name"] == 
+                                   "GDP deflator (base year varies by country)"), 
+                           "indicator"]
   gdpDeflator <- WDI(country = country, indicator = indicator, start = start, end = end)
-  gdpDeflator$gdpDeflatorIndex <- rep(NA, length(gdpDeflator[,1]))
-  
-  for (i in 1:length(gdpDeflator[,1])){
-    if (i == 1){
-      gdpDeflator$gdpDeflatorIndex[i] <- 1000
-    } else {
-      gdpDeflator$gdpDeflatorIndex[i] <- gdpDeflator$gdpDeflatorIndex[i-1]/(1 + gdpDeflator[i  - 1,3]/100)
-    }
-  }
   gdpDeflator
 }

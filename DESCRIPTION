@@ -8,11 +8,13 @@ Maintainer: Kendon Bell <kmb56@berkeley.edu>
 Description: More about what it does (maybe more than one line)
 Depends:
     ggplot2,
+    sp,
     grid,
     plyr,
     RColorBrewer,
     foreach,
     data.table,
     WDI,
-    grid
+    grid,
+    gurobi
 License: GPL-3.0
