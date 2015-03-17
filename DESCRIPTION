@@ -15,6 +15,5 @@ Depends:
     foreach,
     data.table,
     WDI,
-    grid,
-    gurobi
+    grid
 License: GPL-3.0
