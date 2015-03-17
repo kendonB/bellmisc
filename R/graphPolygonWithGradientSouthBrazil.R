@@ -17,44 +17,51 @@
 #' @param rev logical to indicate if Brewer colours should be reversed.
 #' @return None. A pdf file is written.
 graphPolygonWithGradientSouthBrazil <- function(colourVar, dataPoly, 
-                                           legendTitle, fileName, plotTitle,
-                                           directoryPlots=getwd(),
-                                           backPolygon=NULL, brewerPalette="PRGn",
-                                           fontFam = NULL,
-                                           rev=TRUE,
-                                           limits=NULL){
+                                                legendTitle, fileName, plotTitle,
+                                                directoryPlots=getwd(),
+                                                backPolygon=NULL, brewerPalette="PRGn",
+                                                fontFam = NULL,
+                                                rev=TRUE,
+                                                limits=NULL){
   if (is.null(limits)) {
     limits <- c(min(colourVar, na.rm=TRUE), max(colourVar, na.rm=TRUE))
   }
-    
+  
   dataPoly$tmpColour <- colourVar
   if (!(class(backPolygon) == "data.frame")) {
     backPolygon <- convertShpPolyToDf(backPolygon)
   }
-
+  
   if (!(class(dataPoly) == "data.frame")) {
     dataPoly <- convertShpPolyToDf(dataPoly)
   }
-
+  
   plotMap <- ggplot(dataPoly, aes(x=long, y=lat, group=group))+
     geom_polygon(aes(fill=tmpColour))+
     geom_polygon(data = backPolygon, aes(group = group), alpha = 1, colour = "black", fill = NA)
   
+  tmp <- rescale(c(limits[1], 0, limits[2]))[2]
+  values <- c(rescale(seq(limits[1], 0, length.out = 5),to = c(0, tmp)),
+              rescale(seq(limits[1], 0, length.out = 5),to = c(tmp, 1)))
+  values <- values[-5]
+  
   if (rev){
     plotMap <- plotMap + scale_fill_gradientn(legendTitle, na.value = NA, limits=limits,
-                                              colours=rev(brewer.pal(8,brewerPalette)))
+                                              colours=rev(brewer.pal(9,brewerPalette)),
+                                              values=values)
   } else {
     plotMap <- plotMap + scale_fill_gradientn(legendTitle, na.value = NA, limits=limits,
-                                              colours=brewer.pal(8,brewerPalette))
+                                              colours=brewer.pal(9,brewerPalette),
+                                              values=values)
   }
   
   plotMap <- plotMap + theme(axis.text=element_blank(), 
-          axis.ticks=element_blank(),
-          axis.title=element_blank(),
-          panel.grid.major = element_blank(),
-          panel.grid.minor = element_blank(),
-          panel.background = element_blank(),
-          plot.margin=unit(c(-1.5,0,-1.5,0),"cm")) +
+                             axis.ticks=element_blank(),
+                             axis.title=element_blank(),
+                             panel.grid.major = element_blank(),
+                             panel.grid.minor = element_blank(),
+                             panel.background = element_blank(),
+                             plot.margin=unit(c(-1.5,0,-1.5,0),"cm")) +
     theme(plot.title=element_text(size=20, family = fontFam)) +
     theme(legend.title=element_text(size=12, family = fontFam)) +
     scale_x_continuous(limits = c(-62.5, -37)) +
