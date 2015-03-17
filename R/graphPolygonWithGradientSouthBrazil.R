@@ -19,7 +19,7 @@
 graphPolygonWithGradientSouthBrazil <- function(colourVar, dataPoly, 
                                            legendTitle, fileName, plotTitle,
                                            directoryPlots=getwd(),
-                                           backPolygon=NULL, brewerPalette="Spectral",
+                                           backPolygon=NULL, brewerPalette="PRGn",
                                            fontFam = NULL,
                                            rev=TRUE,
                                            limits=NULL){

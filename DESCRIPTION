@@ -15,5 +15,6 @@ Depends:
     foreach,
     data.table,
     WDI,
-    grid
+    grid,
+    maptools
 License: GPL-3.0
