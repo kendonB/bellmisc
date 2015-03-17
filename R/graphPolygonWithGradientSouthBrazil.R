@@ -61,16 +61,12 @@ graphPolygonWithGradientSouthBrazil <- function(colourVar, dataPoly,
     ggtitle(plotTitle) +
     coord_fixed()
   
-  owd <- getwd()
-  setwd(dir=directoryPlots)
-
-  fileName1 <- paste0(fileName, ".pdf")
+  fileName1 <- paste0(file.path(directoryPlots, fileName), ".pdf")
   ggsave(filename = fileName1, plot = plotMap, width = 7, height = 5.2)
-  fileName2 <- paste0(fileName, ".png")
+  fileName2 <- paste0(file.path(directoryPlots, fileName), ".png")
   ggsave(filename = fileName2, plot = plotMap, width = 7, height = 5.2, dpi = 72)
-  fileName3 <- paste0(fileName, ".jpg")
+  fileName3 <- paste0(file.path(directoryPlots, fileName), ".jpg")
   ggsave(filename = fileName3, plot = plotMap, width = 7, height = 5.2, dpi = 144)
   
-  setwd(owd)
   return(plotMap)
 }
