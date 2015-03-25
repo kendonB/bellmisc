@@ -14,14 +14,14 @@
 #' plotted on top of - fortified or raw (prefortifying will be faster if
 #' several maps are being generated).
 #' @param brewerPalette brewer palette name as character. Default is "Spectral".
-#' @param rev logical to indicate if Brewer colours should be reversed.
+#' @param myrev logical to indicate if Brewer colours should be reversed.
 #' @return None. A pdf file is written.
-graphPolygonWithGradientSouthBrazil <- function(colourVar, dataPoly, 
+graphPolygonWithGradientSouthBrazil <- function(colourVar, dataPoly,
                                                 legendTitle, fileName, plotTitle,
                                                 directoryPlots=getwd(),
                                                 backPolygon=NULL, brewerPalette="RdYlGn",
                                                 fontFam = NULL,
-                                                rev=TRUE,
+                                                myrev=TRUE,
                                                 limits=NULL){
   if (is.null(limits)) {
     limits <- c(min(colourVar, na.rm=TRUE), max(colourVar, na.rm=TRUE))
@@ -45,7 +45,7 @@ graphPolygonWithGradientSouthBrazil <- function(colourVar, dataPoly,
               rescale(seq(limits[1], 0, length.out = 5),to = c(tmp, 1)))
   values <- values[-5]
   
-  if (rev){
+  if (myrev){
     plotMap <- plotMap + scale_fill_gradientn(legendTitle, na.value = NA, limits=limits,
                                               colours=rev(brewer.pal(9,brewerPalette)),
                                               values=values)
