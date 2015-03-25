@@ -40,10 +40,16 @@ graphPolygonWithGradientSouthBrazil <- function(colourVar, dataPoly,
     geom_polygon(aes(fill=tmpColour))+
     geom_polygon(data = backPolygon, aes(group = group), alpha = 1, colour = "black", fill = NA)
   
-  tmp <- rescale(c(limits[1], 0, limits[2]))[2]
-  values <- c(rescale(seq(limits[1], 0, length.out = 5),to = c(0, tmp)),
-              rescale(seq(limits[1], 0, length.out = 5),to = c(tmp, 1)))
-  values <- values[-5]
+  if (limits[1] < 0 & limits[2] > 0) {
+    # Get the middle one
+    tmp <- rescale(c(limits[1], 0, limits[2]))[2]
+    values <- c(rescale(seq(limits[1], 0, length.out = 5),to = c(0, tmp)),
+                rescale(seq(0, limits[2], length.out = 5),to = c(tmp, 1)))
+    values <- values[-5]
+  } else {
+    # The range doesn't cover zero so just use the top/bottom half
+    values <- seq(-1, 1, length.out = 9)
+  }
   
   if (myrev){
     plotMap <- plotMap + scale_fill_gradientn(legendTitle, na.value = NA, limits=limits,
