@@ -22,7 +22,9 @@ graphPolygonWithGradientSouthBrazil <- function(colourVar, dataPoly,
                                                 backPolygon=NULL, brewerPalette="RdYlGn",
                                                 fontFam = NULL,
                                                 myrev=TRUE,
-                                                limits=NULL){
+                                                limits=NULL,
+                                                heightAdj = 1,
+                                                widthAdj = 1){
   if (is.null(limits)) {
     limits <- c(min(colourVar, na.rm=TRUE), max(colourVar, na.rm=TRUE))
   }
@@ -77,10 +79,10 @@ graphPolygonWithGradientSouthBrazil <- function(colourVar, dataPoly,
     coord_fixed()
   
   fileName1 <- paste0(file.path(directoryPlots, fileName), ".pdf")
-  ggsave(filename = fileName1, plot = plotMap, width = 7, height = 4.5)
+  ggsave(filename = fileName1, plot = plotMap, width = 7*widthAdj, height = 4.5*heightAdj)
   fileName2 <- paste0(file.path(directoryPlots, fileName), ".png")
-  ggsave(filename = fileName2, plot = plotMap, width = 7, height = 4.5, dpi = 72)
+  ggsave(filename = fileName2, plot = plotMap, width = 7*widthAdj, height = 4.5*heightAdj, dpi = 72)
   fileName3 <- paste0(file.path(directoryPlots, fileName), ".jpg")
-  ggsave(filename = fileName3, plot = plotMap, width = 7, height = 4.5, dpi = 144)
+  ggsave(filename = fileName3, plot = plotMap, width = 7*widthAdj, height = 4.5*heightAdj, dpi = 144)
   return(plotMap)
 }
