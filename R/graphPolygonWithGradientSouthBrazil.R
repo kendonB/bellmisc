@@ -67,19 +67,20 @@ graphPolygonWithGradientSouthBrazil <- function(colourVar, dataPoly,
                              panel.grid.major = element_blank(),
                              panel.grid.minor = element_blank(),
                              panel.background = element_blank(),
-                             plot.margin=unit(c(-1.5,0,-1.5,0),"cm")) +
+                             panel.margin = unit(c(0,0,0,0),"cm"),
+                             plot.margin=unit(c(-1,0,-1.5,0),"cm")) +
     theme(plot.title=element_text(size=20, family = fontFam)) +
-    theme(legend.title=element_text(size=12, family = fontFam)) +
+    theme(legend.title=element_text(size=16, family = fontFam)) +
     scale_x_continuous(limits = c(-62.5, -37)) +
+    scale_y_continuous(limits = c(min(dataPoly$lat), max(dataPoly$lat))) +
     ggtitle(plotTitle) +
     coord_fixed()
   
   fileName1 <- paste0(file.path(directoryPlots, fileName), ".pdf")
-  ggsave(filename = fileName1, plot = plotMap, width = 7, height = 4.15)
+  ggsave(filename = fileName1, plot = plotMap, width = 7, height = 4.5)
   fileName2 <- paste0(file.path(directoryPlots, fileName), ".png")
-  ggsave(filename = fileName2, plot = plotMap, width = 7, height = 4.15, dpi = 72)
+  ggsave(filename = fileName2, plot = plotMap, width = 7, height = 4.5, dpi = 72)
   fileName3 <- paste0(file.path(directoryPlots, fileName), ".jpg")
-  ggsave(filename = fileName3, plot = plotMap, width = 7, height = 4.15, dpi = 144)
-  
+  ggsave(filename = fileName3, plot = plotMap, width = 7, height = 4.5, dpi = 144)
   return(plotMap)
 }
