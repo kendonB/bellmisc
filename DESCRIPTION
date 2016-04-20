@@ -6,7 +6,7 @@ Date: 2014-08-29
 Author: Kendon Bell
 Maintainer: Kendon Bell <kmb56@berkeley.edu>
 Description: More about what it does (maybe more than one line)
-Depends:
+Imports:
     ggplot2,
     sp,
     grid,
@@ -18,3 +18,4 @@ Depends:
     grid,
     maptools
 License: GPL-3.0
+RoxygenNote: 5.0.1

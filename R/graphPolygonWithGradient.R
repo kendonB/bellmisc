@@ -15,19 +15,21 @@
 #' @param brewerPalette brewer palette name as character. Default is "Spectral".
 #' @param rev logical to indicate if Brewer colours should be reversed.
 #' @return a ggplot2 object
-graphPolygonWithGradient <- function(colourVar, dataPoly, labels = NULL,
-                                     legendTitle = "test", plotTitle = "test",
-                                     directoryPlots=getwd(),
-                                     backPolygon=NULL, brewerPalette="Spectral",
-                                     fontFam = NULL,
-                                     rev=TRUE,
-                                     limits=NULL){
+graphPolygonWithGradient <- function(colourVar, dataPoly,
+                                               legendTitle, fileName, plotTitle,
+                                               directoryPlots=getwd(),
+                                               backPolygon=NULL, brewerPalette="RdYlGn",
+                                               fontFam = NULL,
+                                               myrev=TRUE,
+                                               limits=NULL,
+                                               heightAdj = 1,
+                                               widthAdj = 1){
   if (is.null(limits)) {
     limits <- c(min(colourVar, na.rm=TRUE), max(colourVar, na.rm=TRUE))
   }
   
   dataPoly$tmpColour <- colourVar
-  if (!(class(backPolygon) == "data.frame") & !is.null(backPolygon)) {
+  if (!is.null(backPolygon) & !(class(backPolygon) == "data.frame")) {
     backPolygon <- convertShpPolyToDf(backPolygon)
   }
   
@@ -35,34 +37,53 @@ graphPolygonWithGradient <- function(colourVar, dataPoly, labels = NULL,
     dataPoly <- convertShpPolyToDf(dataPoly)
   }
   
-  centroids.df <- as.data.frame(coordinates(dataPoly))
-  names(centroids.df) <- c("Longitude", "Latitude")  #more sensible column names
-  # This shapefile contained population data, let's plot it.
-  popList <- worldMap@data$POP2005
-  
-  pop.df <- data.frame(id = idList, population = popList, centroids.df)
-  
-  ggplot(pop.df, aes(map_id = id)) + #"id" is col in your df, not in the map object 
-    geom_map(aes(fill = population), colour= "grey", map = worldMap.fort) +
-    expand_limits(x = worldMap.fort$long, y = worldMap.fort$lat) +
-    scale_fill_gradient(high = "red", low = "white", guide = "colorbar", labels = comma) +
-    geom_text(aes(label = id, x = Longitude, y = Latitude)) + #add labels at centroids
-    coord_equal(xlim = c(-90,-30), ylim = c(-60, 20)) + #let's view South America
-    labs(x = "Longitude", y = "Latitude", title = "World Population") +
-    theme_bw() 
-  
   plotMap <- ggplot(dataPoly, aes(x=long, y=lat, group=group))+
     geom_polygon(aes(fill=tmpColour))+
     geom_polygon(data = backPolygon, aes(group = group), alpha = 1, colour = "black", fill = NA)
   
-  if (rev){
+  # 
+  if (!is.null(limits)){
+    if (limits[1] < 0 & limits[2] > 0) {
+      # Get the middle one
+      tmp <- rescale(c(limits[1], 0, limits[2]))[2]
+      values <- c(rescale(seq(limits[1], 0, length.out = 5),to = c(0, tmp)),
+                  rescale(seq(0, limits[2], length.out = 5),to = c(tmp, 1)))
+      values <- values[-5]
+    } else {
+      # The range doesn't cover zero so just use the top/bottom half
+      values <- seq(-1, 1, length.out = 9)
+    }
+  } 
+  
+  if (myrev){
     plotMap <- plotMap + scale_fill_gradientn(legendTitle, na.value = NA, limits=limits,
-                                              colours=rev(brewer.pal(8,brewerPalette)))
+                                              colours=rev(brewer.pal(9,brewerPalette)),
+                                              values=values)
   } else {
     plotMap <- plotMap + scale_fill_gradientn(legendTitle, na.value = NA, limits=limits,
-                                              colours=brewer.pal(8,brewerPalette))
+                                              colours=brewer.pal(9,brewerPalette),
+                                              values=values)
   }
   
+  plotMap <- plotMap + theme(axis.text=element_blank(), 
+                             axis.ticks=element_blank(),
+                             axis.title=element_blank(),
+                             panel.grid.major = element_blank(),
+                             panel.grid.minor = element_blank(),
+                             panel.background = element_blank(),
+                             panel.margin = unit(c(0,0,0,0),"cm"),
+                             plot.margin=unit(c(0,0,-0.5,0),"cm")) +
+    theme(plot.title=element_text(size=20, family = fontFam)) +
+    theme(legend.title=element_text(size=16, family = fontFam)) +
+    ggtitle(plotTitle) +
+    scale_x_continuous(limits = c(-124.5, -114)) +
+    coord_fixed(ylim = c(32.5, 42.5))
   
+  fileName1 <- paste0(file.path(directoryPlots, fileName), ".pdf")
+  ggsave(filename = fileName1, plot = plotMap, width = 12, height = 6)
+  fileName2 <- paste0(file.path(directoryPlots, fileName), ".png")
+  ggsave(filename = fileName2, plot = plotMap, width = 12, height = 6, dpi = 72)
+  fileName3 <- paste0(file.path(directoryPlots, fileName), ".jpg")
+  ggsave(filename = fileName3, plot = plotMap, width = 12, height = 6, dpi = 144)
   return(plotMap)
 }

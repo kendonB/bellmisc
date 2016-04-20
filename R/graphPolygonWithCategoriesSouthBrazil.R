@@ -39,22 +39,19 @@ graphPolygonWithCategoriesSouthBrazil <- function(colourVar, dataPoly,
           panel.grid.major = element_blank(),
           panel.grid.minor = element_blank(),
           panel.background = element_blank(),
-          plot.margin=unit(c(-1.5,0,-1.5,0),"cm")) +
+          panel.margin = unit(c(0,0,0,0),"cm"),
+          plot.margin=unit(c(0,0,-0.5,0),"cm")) +
     theme(plot.title=element_text(size=20, family = fontFam)) +
     theme(legend.title=element_text(size=12, family = fontFam)) +
+    ggtitle(plotTitle) +
     scale_x_continuous(limits = c(-62.5, -37)) +
-    ggtitle(plotTitle)
+    coord_fixed(ylim = c(-33.740, -7.355))
   
-  owd <- getwd()
-  setwd(dir=directoryPlots)
-  
-  fileName1 <- paste0(fileName, ".pdf")
-  ggsave(filename = fileName1, plot = plotMap, width = 7, height = 5.2)
-  fileName2 <- paste0(fileName, ".png")
-  ggsave(filename = fileName2, plot = plotMap, width = 7, height = 5.2, dpi = 72)
-  fileName3 <- paste0(fileName, ".jpg")
-  ggsave(filename = fileName3, plot = plotMap, width = 7, height = 5.2, dpi = 144)
-  
-  setwd(owd)
+  fileName1 <- paste0(file.path(directoryPlots, fileName), ".pdf")
+  ggsave(filename = fileName1, plot = plotMap, width = 12, height = 6)
+  fileName2 <- paste0(file.path(directoryPlots, fileName), ".png")
+  ggsave(filename = fileName2, plot = plotMap, width = 12, height = 6, dpi = 72)
+  fileName3 <- paste0(file.path(directoryPlots, fileName), ".jpg")
+  ggsave(filename = fileName3, plot = plotMap, width = 12, height = 6, dpi = 144)
   return(plotMap)
 }

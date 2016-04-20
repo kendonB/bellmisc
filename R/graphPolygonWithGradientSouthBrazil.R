@@ -40,7 +40,8 @@ graphPolygonWithGradientSouthBrazil <- function(colourVar, dataPoly,
   
   plotMap <- ggplot(dataPoly, aes(x=long, y=lat, group=group))+
     geom_polygon(aes(fill=tmpColour))+
-    geom_polygon(data = backPolygon, aes(group = group), alpha = 1, colour = "black", fill = NA)
+    geom_polygon(data = backPolygon, aes(group = group), alpha = 1, 
+                 colour = "black", fill = NA)
   
   if (limits[1] < 0 & limits[2] > 0) {
     # Get the middle one
@@ -49,8 +50,8 @@ graphPolygonWithGradientSouthBrazil <- function(colourVar, dataPoly,
                 rescale(seq(0, limits[2], length.out = 5),to = c(tmp, 1)))
     values <- values[-5]
   } else {
-    # The range doesn't cover zero so just use the top/bottom half
-    values <- seq(-1, 1, length.out = 9)
+    # The range doesn't cover zero so use all colours
+    values <- seq(0, 1, length.out = 9)
   }
   
   if (myrev){
